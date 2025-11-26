@@ -272,11 +272,107 @@ img {
 }
 
 .squad-wrapper {
+	display: flex;
+	flex-direction: column;
 	gap: 8px;
-	font-size: 12px;
+	font-size: smaller;
+	font-weight: 300;
+	color: var(--brand-primary);
 	align-items: center;
 	width: 100%;
 	text-align: center;
+}
+
+.squad-stack {
+	display: flex;
+	justify-content: center;
+	padding: 24px 40px 8px;
+}
+
+.squad-member {
+	position: relative;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	overflow: visible;
+	margin-left: -24px;
+	transition: margin 0.3s ease, transform 0.3s ease;
+	cursor: pointer;
+}
+
+.squad-member:first-child {
+	margin-left: 0;
+}
+
+/* Separate avatars on container hover */
+.container-2:hover .squad-member {
+	margin-left: 8px;
+}
+
+.container-2:hover .squad-member:first-child {
+	margin-left: 0;
+}
+
+.squad-member img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	object-fit: cover;
+	box-shadow: 0 4px 12px rgba(34, 21, 10, 0.15);
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.squad-member:hover {
+	z-index: 10;
+	transform: scale(1.1);
+}
+
+.squad-member:hover img {
+	box-shadow: 0 8px 24px rgba(34, 21, 10, 0.25);
+}
+
+/* Thinking bubble - main bubble */
+.squad-member::after {
+	content: attr(data-name);
+	position: absolute;
+	top: -40px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: #fff;
+	color: var(--brand-primary);
+	padding: 6px 14px;
+	border-radius: 16px;
+	font-size: 12px;
+	font-weight: 600;
+	white-space: nowrap;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease;
+	box-shadow: 0 2px 8px rgba(34, 21, 10, 0.15);
+	border: 1px solid var(--brand-a30);
+}
+
+/* Thinking bubble - small circles */
+.squad-member::before {
+	content: "";
+	position: absolute;
+	top: -12px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 8px;
+	height: 8px;
+	background: #fff;
+	border-radius: 50%;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.2s ease;
+	box-shadow: 0 2px 4px rgba(34, 21, 10, 0.1), -8px -8px 0 -2px #fff,
+		-8px -8px 0 -1px var(--brand-a30);
+}
+
+.squad-member:hover::after,
+.squad-member:hover::before {
+	opacity: 1;
 }
 
 .join-button {
@@ -381,14 +477,15 @@ header .column-flex {
 		padding: clamp(20px, 4vw, 28px);
 	}
 
-	.squad-wrapper {
-		flex-direction: column;
-	}
-
-	.squad-wrapper img,
 	.full-width-link img {
 		max-width: 100%;
 		height: auto;
+	}
+
+	.squad-member {
+		width: 70px;
+		height: 70px;
+		margin-left: -20px;
 	}
 }
 
@@ -421,8 +518,18 @@ header .column-flex {
 		word-break: break-word;
 	}
 
-	.squad-wrapper {
-		flex-direction: column;
+	.squad-member {
+		width: 60px;
+		height: 60px;
+		margin-left: -16px;
+	}
+
+	.squad-member:first-child {
+		margin-left: 0;
+	}
+
+	.squad-stack {
+		padding: 16px 40px;
 	}
 
 	.code-box {
@@ -589,15 +696,6 @@ header .row-flex:hover svg {
 
 .link:hover {
 	text-decoration-style: solid;
-}
-
-/* Squad image hover */
-.squad-wrapper img {
-	transition: transform 0.4s ease;
-}
-
-.squad-wrapper:hover img {
-	transform: scale(1.03);
 }
 
 /* Full width link hover */
