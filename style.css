@@ -345,6 +345,10 @@ article {
 	}
 }
 
+header .column-flex {
+	align-items: flex-start;
+}
+
 @media (max-width: 1100px) {
 	body {
 		padding: clamp(18px, 6vw, 32px);
@@ -415,12 +419,6 @@ article {
 	p {
 		font-size: 14px;
 		word-break: break-word;
-	}
-
-	header .column-flex {
-		flex-direction: row;
-		align-items: center;
-		gap: 8px;
 	}
 
 	.squad-wrapper {
