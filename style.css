@@ -36,24 +36,42 @@ html {
 	color: var(--color-black);
 }
 
+/* Desktop/laptop: fit content to viewport without scrollbar */
+@media (min-width: 1101px) {
+	html,
+	body {
+		height: 100%;
+		overflow: hidden;
+	}
+}
+
 body {
 	padding: clamp(20px, 5vw, 48px);
 	font-size: 16px;
 	display: flex;
 	justify-content: center;
+	min-height: 100vh;
 }
 
 main {
 	width: min(1240px, 100%);
 	display: grid;
 	grid-template-columns: 1.15fr 1fr;
-	grid-template-rows: auto auto auto;
+	grid-template-rows: 1fr auto auto;
 	grid-template-areas:
 		"pitch squad"
 		"pitch install"
 		"pitch template";
 	gap: clamp(12px, 2vw, 20px);
 	align-items: stretch;
+}
+
+/* Desktop: ensure main fills available space */
+@media (min-width: 1101px) {
+	main {
+		height: calc(100vh - clamp(40px, 10vw, 96px));
+		max-height: calc(100vh - clamp(40px, 10vw, 96px));
+	}
 }
 
 section {
@@ -67,11 +85,12 @@ section {
 	gap: clamp(14px, 2vw, 22px);
 	padding: clamp(20px, 3vw, 28px);
 	box-shadow: 0 12px 40px rgba(34, 21, 10, 0.06);
+	overflow: hidden;
 }
 
 .container-1 {
 	grid-area: pitch;
-	padding-bottom: clamp(28px, 4vw, 44px);
+	overflow: hidden;
 }
 
 .container-2 {
@@ -324,6 +343,7 @@ article {
 @media (max-width: 1100px) {
 	body {
 		padding: clamp(18px, 6vw, 32px);
+		overflow-x: hidden;
 	}
 
 	main {
@@ -333,10 +353,13 @@ article {
 			"squad"
 			"install"
 			"template";
+		width: 100%;
+		max-width: 100%;
 	}
 
 	header {
 		align-items: center;
+		flex-wrap: wrap;
 	}
 
 	.join-button {
@@ -345,12 +368,39 @@ article {
 
 	section {
 		align-items: flex-start;
+		max-width: 100%;
+		padding: clamp(20px, 4vw, 28px);
+	}
+
+	.squad-wrapper {
+		flex-direction: column;
+	}
+
+	.squad-wrapper img,
+	.full-width-link img {
+		max-width: 100%;
+		height: auto;
 	}
 }
 
 @media (max-width: 720px) {
+	html {
+		overflow-x: hidden;
+	}
+
+	body {
+		padding: clamp(12px, 4vw, 20px);
+	}
+
 	h1 {
-		font-size: 18px;
+		font-size: 16px;
+		word-break: break-word;
+	}
+
+	h1 svg {
+		flex-shrink: 0;
+		width: 28px;
+		height: auto;
 	}
 
 	h2 {
@@ -359,19 +409,254 @@ article {
 
 	p {
 		font-size: 14px;
+		word-break: break-word;
 	}
 
-	.column-flex {
+	header .column-flex {
 		flex-direction: row;
 		align-items: center;
 		gap: 8px;
 	}
 
+	.squad-wrapper {
+		flex-direction: column;
+	}
+
 	.code-box {
 		flex-wrap: wrap;
+		padding: 10px 12px;
+	}
+
+	.code-box pre {
+		width: 100%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.code-box code {
+		font-size: 11px;
 	}
 
 	button {
 		margin-left: 0;
+		width: 100%;
+		justify-content: center;
 	}
+
+	section {
+		border-radius: 24px;
+		padding: clamp(16px, 4vw, 24px);
+	}
+
+	.join-button {
+		font-size: 20px;
+		padding: 10px 20px;
+	}
+
+	.badge {
+		padding: 3px 6px;
+	}
+
+	.badge span {
+		font-size: 11px;
+	}
+
+	header .row-flex svg {
+		width: 48px;
+		height: 48px;
+	}
+
+	.column-flex strong {
+		font-size: 14px;
+	}
+
+	.column-flex span {
+		font-size: 12px;
+	}
+}
+
+@media (max-width: 400px) {
+	body {
+		padding: 10px;
+	}
+
+	h1 {
+		font-size: 15px;
+	}
+
+	.code-box code {
+		font-size: 10px;
+	}
+
+	.join-button {
+		font-size: 18px;
+	}
+}
+
+/* ========== Animations ========== */
+
+/* Keyframes */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.6;
+	}
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
+}
+
+/* Section entrance animations */
+section {
+	animation: fadeInUp 0.6s ease-out both;
+}
+
+.container-1 {
+	animation-delay: 0s;
+}
+
+.container-2 {
+	animation-delay: 0.1s;
+}
+
+.container-3 {
+	animation-delay: 0.2s;
+}
+
+.container-4 {
+	animation-delay: 0.3s;
+}
+
+/* Header logo hover effect */
+header .row-flex svg {
+	transition: transform 0.3s ease;
+}
+
+header .row-flex:hover svg {
+	transform: rotate(-5deg) scale(1.05);
+}
+
+/* Badge pulse animation */
+.badge #circle {
+	animation: pulse 2s ease-in-out infinite;
+}
+
+/* Main image hover effect */
+.main-image {
+	transition: transform 0.4s ease;
+}
+
+.main-image:hover {
+	transform: scale(1.02);
+}
+
+/* Link hover animations */
+.link {
+	transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.link:hover {
+	text-decoration-style: solid;
+}
+
+/* Squad image hover */
+.squad-wrapper img {
+	transition: transform 0.4s ease;
+}
+
+.squad-wrapper:hover img {
+	transform: scale(1.03);
+}
+
+/* Full width link hover */
+.full-width-link img {
+	transition: transform 0.4s ease;
+}
+
+.full-width-link:hover img {
+	transform: scale(1.02);
+}
+
+/* Code box shimmer effect on hover */
+.code-box {
+	position: relative;
+	overflow: hidden;
+}
+
+.code-box::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(255, 255, 255, 0.4) 50%,
+		transparent 100%
+	);
+	background-size: 200% 100%;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	pointer-events: none;
+}
+
+.code-box:hover::before {
+	opacity: 1;
+	animation: shimmer 1.5s ease-in-out;
+}
+
+/* H1 SVG subtle float */
+h1 svg {
+	transition: transform 0.3s ease;
+}
+
+h1:hover svg {
+	transform: translateY(-2px);
+}
+
+/* H2 icon animations */
+h2 svg {
+	transition: transform 0.3s ease;
+}
+
+h2:hover svg {
+	transform: scale(1.15);
+}
+
+/* Smooth focus states */
+button:focus-visible,
+a:focus-visible {
+	outline: 2px solid var(--brand-primary);
+	outline-offset: 2px;
 }
